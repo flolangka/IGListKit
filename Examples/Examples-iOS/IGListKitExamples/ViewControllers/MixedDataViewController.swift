@@ -112,7 +112,11 @@ final class MixedDataViewController: UIViewController, ListAdapterDataSource, Li
     func emptyView(for listAdapter: ListAdapter) -> UIView? { return nil }
 
     // MARK: - ListAdapterMoveDelegate
-
+    
+    // 通过查看 IGListAdapter+UICollectionView 中 move 相关代码，发现只有两种情况可以触发move
+    // 1.同组section中的item之间可以移动
+    // 2.两个单item的section可以移动
+    // 这里的回调是section之间的移动回调
     func listAdapter(_ listAdapter: ListAdapter, move object: Any, from previousObjects: [Any], to objects: [Any]) {
         data = objects
     }

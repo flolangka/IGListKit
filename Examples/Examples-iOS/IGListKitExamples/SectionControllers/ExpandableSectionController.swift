@@ -9,6 +9,7 @@ import IGListKit
 import IGListSwiftKit
 import UIKit
 
+/// 文本展开、折叠
 final class ExpandableSectionController: ListSectionController {
 
     private var expanded = false

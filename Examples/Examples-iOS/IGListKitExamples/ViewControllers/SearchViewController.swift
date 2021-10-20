@@ -47,16 +47,21 @@ final class SearchViewController: UIViewController, ListAdapterDataSource, Searc
     // MARK: ListAdapterDataSource
 
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        guard filterString != "" else { return [searchToken] + words.map { $0 as ListDiffable } }
+        guard filterString != "" else {
+            // 搜索框内容为空，数据源前面加一个搜索标记位
+            return [searchToken] + words.map { $0 as ListDiffable }
+        }
         return [searchToken] + words.filter { $0.lowercased().contains(filterString.lowercased()) }.map { $0 as ListDiffable }
     }
 
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         if let obj = object as? NSNumber, obj == searchToken {
             let sectionController = SearchSectionController()
+            // 搜索框内容改变代理
             sectionController.delegate = self
             return sectionController
         } else {
+            // 普通文本数据还是用通用的 LabelSectionController
             return LabelSectionController()
         }
     }
@@ -69,6 +74,8 @@ final class SearchViewController: UIViewController, ListAdapterDataSource, Searc
 
     func searchSectionController(_ sectionController: SearchSectionController, didChangeText text: String) {
         filterString = text
+        
+        // 搜索框内容一变，立即刷新数据源更新页面
         adapter.performUpdates(animated: true, completion: nil)
     }
 
